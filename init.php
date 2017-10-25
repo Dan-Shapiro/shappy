@@ -31,8 +31,9 @@
 					);");
 
 	mysqli_query($conn, "	INSERT INTO stats(display_name, short_name) VALUES ('Attack', 'atk');");
-	mysqli_query($conn, "	INSERT INTO stats(display_name, short_name) VALUES ('Defense', 'def');");
+	mysqli_query($conn, "	INSERT INTO stats(display_name, short_name) VALUES ('Defence', 'def');");
 	mysqli_query($conn, "	INSERT INTO stats(display_name, short_name) VALUES ('Magic', 'mag');");
+	mysqli_query($conn, "	INSERT INTO stats(display_name, short_name) VALUES ('Gold', 'gp');");
 
 	header('Location:login.php');
 ?>

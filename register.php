@@ -11,22 +11,21 @@
 			$error = 'Passwords do not match!';
 		}
 		else {
-			require_once 'config.php';
-			$conn = mysql_connect($dbhost, $dbuser, $dbpass) or die('Error connecting to mysql');
-			mysql_select_db($dbname);
+			include 'config.php';
+			$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname) or die('Error connecting to mysql');
 
-			$query = sprintf("	SELECT COUNT(id) FROM users WHERE UPPER(username)=UPPER('%s')", mysql_real_escape_string($_POST['username']));
+			$query = sprintf("	SELECT COUNT(id) FROM users WHERE UPPER(username)=UPPER('%s')", mysqli_real_escape_string($conn, $_POST['username']));
 
-			$result = mysql_query($query);
-			list($count) = mysql_fetch_row($result);
+			$result = mysqli_query($conn, $query);
+			list($count) = mysqli_fetch_row($result);
 			if($count >= 1) {
 				$error = 'Username is taken.';
 			}
 			else {
 				$email = $_POST['email'];
 
-				$query = sprintf("	INSERT INTO users(username, password, email) VALUES ('%s', '%s', '%s');", mysql_real_escape_string($_POST['username']), mysql_real_escape_string(md5($password)), mysql_real_escape_string($email));
-				mysql_query($query);
+				$query = sprintf("	INSERT INTO users(username, password, email) VALUES ('%s', '%s', '%s');", mysqli_real_escape_string($conn, $_POST['username']), mysqli_real_escape_string($conn, md5($password)), mysqli_real_escape_string($conn, $email));
+				mysqli_query($conn, $query);
 				$message = 'Registered successfully!';
 
 				$mailpath = 'C:/xampp/htdocs/Assignment2/src/PHPMailer';
@@ -60,9 +59,13 @@
 					echo 'Mailer Error: ' . $mail->ErrorInfo;
 				}
 
-				?>
-				<span style='color:green;'>Registration successful!</span>
-				<?php
+				$user_id = mysqli_insert_id($conn);
+				include 'stats.php';
+				set_stat('atk', $user_id, '5');
+				set_stat('def', $user_id, '5');
+				set_stat('mag', $user_id, '5');
+
+				$message = "Registered successfully!";
 
 				header('Location:login.php');
 			}

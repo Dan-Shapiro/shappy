@@ -2,18 +2,17 @@
 	if($_GET) {
 		$email = $_GET['email'];
 
-		require_once 'config.php';
-		$conn = mysql_connect($dbhost, $dbuser, $dbpass) or die('Error connecting to mysql');
-		mysql_select_db($dbname);
+		include 'config.php';
+		$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname) or die('Error connecting to mysql');
 
-		$query = sprintf("SELECT COUNT(id) FROM users WHERE email='%s' AND confirmed=0", mysql_real_escape_string($email));
+		$query = sprintf("SELECT COUNT(id) FROM users WHERE email='%s' AND confirmed=0", mysqli_real_escape_string($conn, $email));
 
-		$result = mysql_query($query);
-		list($count) = mysql_fetch_row($result);
+		$result = mysqli_query($conn, $query);
+		list($count) = mysqli_fetch_row($result);
 		if($count >= 1) {
-			$query = sprintf("UPDATE users SET confirmed=1 WHERE email='%s'", mysql_real_escape_string($email));
+			$query = sprintf("UPDATE users SET confirmed=1 WHERE email='%s'", mysqli_real_escape_string($conn, $email));
 
-			mysql_query($query);
+			mysqli_query($conn, $query);
 
 			?>
 			<span style='color:green;'>Congratulations, you've confirmed your email address!</span>

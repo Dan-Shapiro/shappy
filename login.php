@@ -6,22 +6,21 @@
 	session_start();
 
 	if($_POST) {
-		require_once 'config.php';
+		include 'config.php';
 		$username = $_POST['username'];
 		$password = $_POST['password'];
-		$conn = mysql_connect($dbhost, $dbuser, $dbpass) or die('Error connecting to mysql');
-		mysql_select_db($dbname);
+		$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname) or die('Error connecting to mysql');
 
-		$query = sprintf("SELECT COUNT(id) FROM users WHERE UPPER(username)=UPPER('%s') AND password='%s'", mysql_real_escape_string($username), mysql_real_escape_string(md5($password)));
+		$query = sprintf("SELECT COUNT(id) FROM users WHERE UPPER(username)=UPPER('%s') AND password='%s'", mysqli_real_escape_string($conn, $username), mysqli_real_escape_string($conn, md5($password)));
 
-		$result = mysql_query($query);
-		list($count) = mysql_fetch_row($result);
+		$result = mysqli_query($conn, $query);
+		list($count) = mysqli_fetch_row($result);
 
 		if($count == 1) {
-			$query = sprintf("SELECT confirmed FROM users WHERE UPPER(username)=UPPER('%s')", mysql_real_escape_string($username));
+			$query = sprintf("SELECT confirmed FROM users WHERE UPPER(username)=UPPER('%s')", mysqli_real_escape_string($conn, $username));
 
-			$result = mysql_query($query);
-			list($conf) = mysql_fetch_row($result);
+			$result = mysqli_query($conn, $query);
+			list($conf) = mysqli_fetch_row($result);
 
 			if($conf != 1) {
 				$error = 'Email has not been confirmed.';
@@ -30,14 +29,14 @@
 				$_SESSION['authenticated'] = true;
 				$_SESSION['username'] = $username;
 
-				$query = sprintf("UPDATE users SET last_login=NOW() WHERE UPPER('%s') AND password='%s'", mysql_real_escape_string($username), mysql_real_escape_string(md5(password)));
+				$query = sprintf("UPDATE users SET last_login=NOW() WHERE UPPER('%s') AND password='%s'", mysqli_real_escape_string($conn, $username), mysqli_real_escape_string($conn, md5(password)));
 
-				mysql_query($query);
+				mysqli_query($conn, $query);
 
-				$query = sprintf("SELECT is_admin FROM users WHERE UPPER(username)=UPPER('%s') AND password='%s'", mysql_real_escape_string($username), mysql_real_escape_string(md5(password)));
+				$query = sprintf("SELECT is_admin FROM users WHERE UPPER(username)=UPPER('%s') AND password='%s'", mysqli_real_escape_string($conn, $username), mysqli_real_escape_string($conn, md5(password)));
 
-				$result = mysql_query($query);
-				list($is_admin) = mysql_fetch_row($result);
+				$result = mysqli_query($conn, $query);
+				list($is_admin) = mysqli_fetch_row($result);
 				if($is_admin == 1) {
 					header('Location:admin.php');
 				}

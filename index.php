@@ -2,6 +2,12 @@
 	include 'smarty.php';
 
 	session_start();
+	if(isset($_SESSION['authenticated'])) {
+		if(!$_SESSION['authenticated']) {
+			header("Location:login.php");
+		}
+	}
+
 	$smarty->assign('name', $_SESSION['username']);
 
 	include 'config.php';

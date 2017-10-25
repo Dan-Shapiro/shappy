@@ -27,14 +27,16 @@
 				$query = sprintf("	INSERT INTO users(username, password, email) VALUES ('%s', '%s', '%s');", mysqli_real_escape_string($conn, $_POST['username']), mysqli_real_escape_string($conn, md5($password)), mysqli_real_escape_string($conn, $email));
 				mysqli_query($conn, $query);
 				$message = 'Registered successfully!';
-
+				/*
 				$mailpath = 'C:/xampp/htdocs/Assignment2/src/PHPMailer';
 				$path = get_include_path();
 				set_include_path($path . PATH_SEPARATOR . $mailpath);
-				require 'PHPMailerAutoload.php';
+				*/
+				require 'PHPMailer/PHPMailerAutoload.php';
 				
 				$mail = new PHPMailer();
 				$mail->IsSMTP();
+				$mail->SMTPDebug = 1;
 				$mail->SMTPAuth = true;
 				$mail->SMTPSecure = "tls";
 				$mail->Host = "smtp.gmail.com";
@@ -46,10 +48,10 @@
 				$sender = "Shappy";
 				$subj = "Shappy Email Confirmation";
 				$receiver = $email;
-				$msg = "<p>Thank you for signing up to Shappy.  Click below to confirm your email address.</p><p><a href='http://localhost/Shappy/confirm.php?email=$email'>below</a></p>";
+				$msg = "<p>Thank you for signing up to Shappy.  Click below to confirm your email address.</p><p><a href='https://shappy.herokuapp.com/confirm.php?email=$email'>below</a></p>";
 				
 				$mail->addAddress($receiver);
-				$mail->SetFrom($sender);
+				$mail->SetFrom($sender, "Shappy");
 				$mail->Subject = "$subj";
 				$mail->Body = "$msg";
 				

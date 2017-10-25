@@ -13,6 +13,8 @@
 						password varchar(50),
 						is_admin tinyint(1) DEFAULT 0,
 						last_login timestamp NULL,
+						email TEXT NOT NULL,
+						confirmed tinyint(1) NOT NULL DEFAULT 0,
 						PRIMARY KEY(id)
 					);");
 	mysql_query("	CREATE TABLE stats (
@@ -28,4 +30,6 @@
 						value text,
 						PRIMARY KEY(id)
 					);");
+
+	header('Location:login.php');
 ?>

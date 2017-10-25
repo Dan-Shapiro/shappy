@@ -1,18 +1,18 @@
 <?php
-/* Smarty version {Smarty::SMARTY_VERSION}, created on 2017-10-25 03:14:03
+/* Smarty version {Smarty::SMARTY_VERSION}, created on 2017-10-25 03:17:29
   from "C:\xampp\htdocs\Shappy\views\login.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32-dev-27',
-  'unifunc' => 'content_59efe55ba4b121_75847111',
+  'unifunc' => 'content_59efe629c47ae4_28711902',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '6b9dba70d7c561985ffa69718cc8c76a4de83cb6' => 
     array (
       0 => 'C:\\xampp\\htdocs\\Shappy\\views\\login.tpl',
-      1 => 1508894041,
+      1 => 1508894049,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_59efe55ba4b121_75847111 (Smarty_Internal_Template $_smarty_tpl) {
+function content_59efe629c47ae4_28711902 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <html>
 <head>
@@ -33,8 +33,8 @@ function content_59efe55ba4b121_75847111 (Smarty_Internal_Template $_smarty_tpl)
 	<?php }?>
 
 	<form action='login.php' method='post'>
-	Username: <input type="text" name="username" id="username" value="" /><br />
-	Password: <input type="password" name="password" value="" /><br />
+	Username: <input type="text" name="username" id="username" /><br />
+	Password: <input type="password" name="password" /><br />
 	<input type="submit" name="Login" />
 	</form>
 

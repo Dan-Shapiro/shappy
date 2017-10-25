@@ -1,11 +1,5 @@
 <?php
-	require('smarty/Smarty.class.php');
-
-	$smarty = new Smarty();
-	$smarty->template_dir = "views";
-	$smarty->compile_dir = "tmp";
-	$smarty->cache_dir = "cache";
-	$smarty->config_dir = "configs";
+	include 'smarty.php';
 
 	$error = "";
 
@@ -24,22 +18,32 @@
 		list($count) = mysql_fetch_row($result);
 
 		if($count == 1) {
-			$_SESSION['authenticated'] = true;
-			$_SESSION['username'] = $username;
-
-			$query = sprintf("UPDATE users SET last_login=NOW() WHERE UPPER('%s') AND password='%s'", mysql_real_escape_string($username), mysql_real_escape_string(md5(password)));
-
-			mysql_query($query);
-
-			$query = sprintf("SELECT is_admin FROM users WHERE UPPER(username)=UPPER('%s') AND password='%s'", mysql_real_escape_string($username), mysql_real_escape_string(md5(password)));
+			$query = sprintf("SELECT confirmed FROM users WHERE UPPER(username)=UPPER('%s')", mysql_real_escape_string($username));
 
 			$result = mysql_query($query);
-			list($is_admin) = mysql_fetch_row($result);
-			if($is_admin == 1) {
-				header('Location:admin.php');
+			list($conf) = mysql_fetch_row($result);
+
+			if($conf != 1) {
+				$error = 'Email has not been confirmed.';
 			}
 			else {
-				header('Location:index.php');
+				$_SESSION['authenticated'] = true;
+				$_SESSION['username'] = $username;
+
+				$query = sprintf("UPDATE users SET last_login=NOW() WHERE UPPER('%s') AND password='%s'", mysql_real_escape_string($username), mysql_real_escape_string(md5(password)));
+
+				mysql_query($query);
+
+				$query = sprintf("SELECT is_admin FROM users WHERE UPPER(username)=UPPER('%s') AND password='%s'", mysql_real_escape_string($username), mysql_real_escape_string(md5(password)));
+
+				$result = mysql_query($query);
+				list($is_admin) = mysql_fetch_row($result);
+				if($is_admin == 1) {
+					header('Location:admin.php');
+				}
+				else {
+					header('Location:index.php');
+				}
 			}
 		}
 		else {
@@ -50,3 +54,5 @@
 	$smarty->assign('error', $error);
 	$smarty->display('login.tpl');
 ?>
+
+<p><a href="register.php">Register</a></p>

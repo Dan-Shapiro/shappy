@@ -1,4 +1,14 @@
 <?php
+	require('smarty/Smarty.class.php');
+
+	$smarty = new Smarty();
+	$smarty->template_dir = "views";
+	$smarty->compile_dir = "tmp";
+	$smarty->cache_dir = "cache";
+	$smarty->config_dir = "configs";
+
+	$error = "";
+
 	session_start();
 
 	if($_POST) {
@@ -33,15 +43,10 @@
 			}
 		}
 		else {
-			?>
-			<span style='color:red;'>Error: username and password combination wrong.</span>
-			<?php
+			$error = 'Wrong username and password combination.';
 		}
 	}
-?>
 
-<form action='login.php' method='post'>
-	Username: <input type="text" name="username" /><br />
-	Password: <input type="password" name="password" /><br />
-	<input type="submit" name="Login" />
-</form>
+	$smarty->assign('error', $error);
+	$smarty->display('login.tpl');
+?>

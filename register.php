@@ -1,11 +1,20 @@
 <?php
+	require('smarty/Smarty.class.php');
+
+	$smarty = new Smarty();
+	$smarty->template_dir = "views";
+	$smarty->compile_dir = "tmp";
+	$smarty->cache_dir = "cache";
+	$smarty->config_dir = "configs";
+
+	$error = "";
+	$message = "";
+
 	if($_POST) {
 		$password = $_POST['password'];
 		$confirm = $_POST['confirm'];
 		if ($password != $confirm) {
-			?>
-			<span style='color:red;'>Error: Passwords do not match!</span>
-			<?php
+			$error = 'Passwords do not match!';
 		}
 		else {
 			require_once 'config.php';
@@ -17,19 +26,14 @@
 			$result = mysql_query($query);
 			list($count) = mysql_fetch_row($result);
 			if($count >= 1) {
-				?>
-				<span style='color:red;'>Error: username is taken.</span>
-				<?php
+				$error = 'Username is taken.';
 			}
 			else {
 				$email = $_POST['email'];
 
 				$query = sprintf("	INSERT INTO users(username, password, email) VALUES ('%s', '%s', '%s');", mysql_real_escape_string($_POST['username']), mysql_real_escape_string(md5($password)), mysql_real_escape_string($email));
 				mysql_query($query);
-
-
-
-
+				$message = 'Registered successfully!';
 
 				$mailpath = 'C:/xampp/htdocs/Assignment2/src/PHPMailer';
 				$path = get_include_path();
@@ -68,12 +72,9 @@
 			}
 		}
 	}
-?>
 
-<form method='post' action='register.php'>
-	Username: <input type="text" name="username" /><br />
-	Password: <input type="password" name="password" /><br />
-	Confirm Password: <input type="password" name="confirm" /><br />
-	Email: <input type="text" name="email" /><br />
-	<input type="submit" name="Register" />
-</form>
+	$smarty->assign('error', $error);
+	$smarty->assign('message', $message);
+
+	$smarty->display('register.tpl');
+?>

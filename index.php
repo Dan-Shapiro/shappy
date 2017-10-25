@@ -18,5 +18,15 @@
 	$smarty->assign('defence', get_stat('def', $user_id));
 	$smarty->assign('gold', get_stat('gp', $user_id));
 
+	$setHP = get_stat('sethp', $user_id);
+	if($setHP == 0) {
+		set_stat('curhp', $user_id, 10);
+		set_stat('maxhp', $user_id, 10);
+		set_stat('sethp', $user_id, 1);
+	}
+
+	$smarty->assign('currentHP', get_stat('curhp', $user_id));
+	$smarty->assign('maximumHP', get_stat('maxhp', $user_id));
+
 	$smarty->display('index.tpl');
 ?>

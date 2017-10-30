@@ -48,6 +48,7 @@
 	mysqli_query($conn, "	INSERT INTO stats(display_name, short_name) VALUES ('Defence', 'def');");
 	mysqli_query($conn, "	INSERT INTO stats(display_name, short_name) VALUES ('Magic', 'mag');");
 	mysqli_query($conn, "	INSERT INTO stats(display_name, short_name) VALUES ('Gold', 'gp');");
+	mysqli_query($conn, "	INSERT INTO stats(display_name, short_name) VALUES ('Gold In Bank', 'bankgp');");
 	mysqli_query($conn, "	INSERT INTO stats(display_name, short_name) VALUES ('Maximum HP', 'maxhp');");
 	mysqli_query($conn, "	INSERT INTO stats(display_name, short_name) VALUES ('Current HP', 'curhp');");
 

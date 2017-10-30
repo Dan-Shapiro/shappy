@@ -13,7 +13,8 @@
 		<li>Current HP: <strong>{$currentHP}/{$maximumHP}</strong></li>
 	</ul>
 
-	<p><a href="logout.php">Logout</a></p>
 	<p><a href="forest.php">The Forest</a></p>
+	<p><a href="bank.php">The Bank</a></p>
+	<p><a href="logout.php">Logout</a></p>
 </body>
 </html>

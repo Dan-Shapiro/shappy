@@ -15,6 +15,7 @@
 
 	<p><a href="forest.php">The Forest</a></p>
 	<p><a href="bank.php">The Bank</a></p>
+	<p><a href="healer.php">The Healer</a></p>
 	<p><a href="logout.php">Logout</a></p>
 </body>
 </html>
